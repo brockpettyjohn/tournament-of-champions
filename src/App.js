@@ -1,14 +1,21 @@
 import React, { Component } from 'react';
 import './App.css';
-import { teamInput, gameCreator } from './ducks/reducer.js'
+import { teamInput, teamListCreator, gameCreator } from './ducks/reducer.js'
 import { connect } from 'react-redux'
 
 class App extends Component {
   render() {
-    const { team, gameCreator, teamInput, games } = this.props
-    const teams = games.map((eaTeam, i) =>{
+    const { team, teamListCreator, teamInput, teamsList, gamesOfSeason } = this.props
+    const gameReady = gamesOfSeason.map((indGame, i) => {
       return (
-        <div key={ i }>
+        <div key={i}>
+          {indGame}
+        </div>
+      )
+    })
+    const teams = teamsList.map((eaTeam, i) => {
+      return (
+        <div key={i}>
           {eaTeam}
         </div>
       )
@@ -23,9 +30,15 @@ class App extends Component {
             (e) => {
               teamInput(e.target.value)
             }
-          } />
-        <button onClick={ () => { gameCreator(team) } }>Add</button>
+          } onKeyPress={e => {
+            if (e.key === 'Enter') {
+              teamListCreator(team)
+            }
+          }} />
+        <button onClick={() => { teamListCreator(team) }}>Add</button>
         <div>{teams}</div>
+        <button onClick={() => { gameCreator() }}></button>
+        <div>{gameReady}</div>
       </div>
     );
   }
@@ -33,7 +46,8 @@ class App extends Component {
 function mapStateToProps(state) {
   return {
     team: state.team,
-    games: state.games
+    teamsList: state.teamsList,
+    gamesOfSeason: state.gamesOfSeason
   }
 }
-export default connect(mapStateToProps, { teamInput, gameCreator })(App);
+export default connect(mapStateToProps, { teamInput, teamListCreator, gameCreator })(App);
