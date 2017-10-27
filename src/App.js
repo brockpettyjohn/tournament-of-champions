@@ -4,12 +4,14 @@ import { teamInput, teamListCreator, gameCreator } from './ducks/reducer.js'
 import { connect } from 'react-redux'
 
 class App extends Component {
+  
   render() {
-    const { team, teamListCreator, teamInput, teamsList, gamesOfSeason } = this.props
-    const gameReady = gamesOfSeason.map((indGame, i) => {
+    console.log(this.props.gamesOfSeason)
+    const { team, teamListCreator, teamInput, teamsList, gamesOfSeason, gameCreator } = this.props
+    const gameReady = gamesOfSeason.map((gameOfSeason, i) => {
       return (
         <div key={i}>
-          {indGame}
+          {gameOfSeason}
         </div>
       )
     })
@@ -37,7 +39,7 @@ class App extends Component {
           }} />
         <button onClick={() => { teamListCreator(team) }}>Add</button>
         <div>{teams}</div>
-        <button onClick={() => { gameCreator() }}></button>
+        <button onClick={() => { gameCreator(this.props.teamsList) }}>Game Time</button>
         <div>{gameReady}</div>
       </div>
     );

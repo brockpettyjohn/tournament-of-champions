@@ -16,19 +16,8 @@ export default function reducer(state = initialState, action) {
         case TEAM_LIST:
             return Object.assign({}, state, { team: '', teamsList: state.teamsList.concat(action.payload) })
         case GAME_CREATOR:
-        console.log(state.teamsList)
-            let i, j;
-            const n = state.teamsList.length
-            const tournaments = () => {
-                const games = []
-                for (i = 0; i < n; i++) {
-                    for (j = i + 1; j < n; j++) {
-                        games.push(state.teamsList[i] + "vs" + state.teamsList[j]);
-                    }
-                }
-                return games
-            }
-            return Object.assign({}, state, { gamesOfSeason: tournaments })
+            console.log(action.payload)
+            return Object.assign({}, state, { gamesOfSeason: action.payload })
         default:
             return state
     }
@@ -46,9 +35,21 @@ export function teamListCreator(indTeam) {
         payload: indTeam
     }
 }
-export function gameCreator() {
-    console.log("hit action")
+export function gameCreator(arr) {
+    let i, j;
+    const tournaments = (arr) => {
+        const games = []
+        const n = arr.length
+        for (i = 0; i < n; i++) {
+            for (j = i + 1; j < n; j++) {
+                games.push(arr[i] + " vs " + arr[j]);
+            }
+        }
+        return games
+
+    }
     return {
-        type: GAME_CREATOR
+        type: GAME_CREATOR,
+        payload: tournaments(arr)
     }
 }
